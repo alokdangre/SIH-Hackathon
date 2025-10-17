@@ -8,6 +8,6 @@ class Contract(Base):
     listing_id=Column(Integer,ForiengnKey("listings.id"))
     buyer_id = Column(String, ForeignKey("users.id"))
     status = Column(String,default="pending")
-    offer_price- Column(Float)
+    offer_price = Column(Float)
     listing = relationship("Listing")
     buyer = relationship("User")
