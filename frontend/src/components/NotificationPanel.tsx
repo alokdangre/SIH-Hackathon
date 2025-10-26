@@ -90,9 +90,9 @@ export default function NotificationPanel({ isOpen, onClose }: NotificationPanel
             <div className="flex items-center space-x-2">
               <Bell className="h-5 w-5 text-gray-600" />
               <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
-              {notificationsData?.unread_count > 0 && (
+              {(notificationsData?.unread_count ?? 0) > 0 && (
                 <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                  {notificationsData.unread_count}
+                  {notificationsData?.unread_count}
                 </span>
               )}
             </div>
@@ -105,7 +105,7 @@ export default function NotificationPanel({ isOpen, onClose }: NotificationPanel
           </div>
 
           {/* Actions */}
-          {notificationsData?.unread_count > 0 && (
+          {(notificationsData?.unread_count ?? 0) > 0 && (
             <div className="border-b border-gray-200 px-6 py-3">
               <button
                 onClick={handleMarkAllAsRead}
@@ -136,9 +136,9 @@ export default function NotificationPanel({ isOpen, onClose }: NotificationPanel
                   ))}
                 </div>
               </div>
-            ) : notificationsData?.notifications?.length > 0 ? (
+            ) : (notificationsData?.notifications?.length ?? 0) > 0 ? (
               <div className="divide-y divide-gray-200">
-                {notificationsData.notifications.map((notification: Notification) => (
+                {notificationsData?.notifications?.map((notification: Notification) => (
                   <div
                     key={notification.id}
                     className={`p-6 hover:bg-gray-50 ${
