@@ -10,6 +10,7 @@ class Settings(BaseSettings):
         env_file=(".env", "../.env", "../../.env"),
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",  # Allow extra fields to be ignored instead of raising validation errors
     )
 
     app_name: str = Field(default="Oilseed Hedging Backend")
