@@ -101,18 +101,18 @@ export default function CreateListingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Create Listing</h1>
-              <p className="text-gray-600">Upload photos and enter quantity (kg)</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Create Listing</h1>
+              <p className="text-gray-600 dark:text-gray-400">Upload photos and enter quantity (kg)</p>
             </div>
             <button
               onClick={() => router.push("/dashboard")}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+              className="btn-secondary"
             >
               Cancel
             </button>
@@ -121,7 +121,7 @@ export default function CreateListingPage() {
       </header>
 
       <main className="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="card">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
@@ -131,7 +131,7 @@ export default function CreateListingPage() {
 
             {/* Photos Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Photos (Optional, max 3)
               </label>
               
@@ -156,10 +156,10 @@ export default function CreateListingPage() {
                 
                 {/* Add Photo Button */}
                 {selectedFiles.length < 3 && (
-                  <label className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400">
+                  <label className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 dark:hover:border-gray-500">
                     <div className="text-center">
                       <Plus className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                      <span className="text-sm text-gray-500">Add Photo</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">Add Photo</span>
                     </div>
                     <input
                       type="file"
@@ -176,12 +176,12 @@ export default function CreateListingPage() {
             {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Commodity *
                 </label>
                 <select
                   {...register("commodity", { required: "Commodity is required" })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 >
                   <option value="">Select commodity</option>
                   <option value="soymeal">Soymeal</option>
@@ -195,21 +195,21 @@ export default function CreateListingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Variety
                 </label>
                 <input
                   {...register("variety")}
                   type="text"
                   placeholder="e.g. Premium, Bold"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Quantity (kg) *
                 </label>
                 <input
@@ -220,7 +220,7 @@ export default function CreateListingPage() {
                   type="number"
                   step="0.01"
                   placeholder="e.g. 5000"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
                 {errors.qty_kg && (
                   <p className="mt-1 text-sm text-red-600">{errors.qty_kg.message}</p>
@@ -228,7 +228,7 @@ export default function CreateListingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Price per kg (₹) *
                 </label>
                 <input
@@ -239,7 +239,7 @@ export default function CreateListingPage() {
                   type="number"
                   step="0.01"
                   placeholder="e.g. 45.50"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
                 {errors.price_per_kg && (
                   <p className="mt-1 text-sm text-red-600">{errors.price_per_kg.message}</p>
@@ -249,7 +249,7 @@ export default function CreateListingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Moisture %
                 </label>
                 <input
@@ -260,7 +260,7 @@ export default function CreateListingPage() {
                   type="number"
                   step="0.1"
                   placeholder="e.g. 12.5"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
                 {errors.moisture_pct && (
                   <p className="mt-1 text-sm text-red-600">{errors.moisture_pct.message}</p>
@@ -268,27 +268,27 @@ export default function CreateListingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Location
                 </label>
                 <input
                   {...register("location")}
                   type="text"
                   placeholder="e.g. Punjab, Gujarat"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Quality Notes
               </label>
               <textarea
                 {...register("quality_notes")}
                 rows={3}
                 placeholder="Describe the quality, grade, and any other relevant details..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="input"
               />
             </div>
 
@@ -296,14 +296,14 @@ export default function CreateListingPage() {
               <button
                 type="button"
                 onClick={() => router.push("/dashboard")}
-                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="btn-secondary"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary"
               >
                 {isLoading ? "Creating..." : "Create Listing"}
               </button>
