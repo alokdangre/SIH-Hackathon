@@ -1,0 +1,413 @@
+{
+  "info": {
+    "name": "Oilseed Hedging Platform API",
+    "description": "API collection for the oilseed hedging platform backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"farmer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "User Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rajesh@farmer.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listings",
+      "item": [
+        {
+          "name": "Get All Listings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/listings?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["listings"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "commodity",
+                  "value": "soymeal",
+                  "disabled": true
+                },
+                {
+                  "key": "min_qty",
+                  "value": "1000",
+                  "disabled": true
+                },
+                {
+                  "key": "max_price",
+                  "value": "50",
+                  "disabled": true
+                },
+                {
+                  "key": "location",
+                  "value": "Punjab",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Listing by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/listings/1",
+              "host": ["{{base_url}}"],
+              "path": ["listings", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Listing",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "commodity",
+                  "value": "soymeal",
+                  "type": "text"
+                },
+                {
+                  "key": "variety",
+                  "value": "Premium",
+                  "type": "text"
+                },
+                {
+                  "key": "qty_kg",
+                  "value": "5000",
+                  "type": "text"
+                },
+                {
+                  "key": "price_per_kg",
+                  "value": "45.50",
+                  "type": "text"
+                },
+                {
+                  "key": "moisture_pct",
+                  "value": "12.5",
+                  "type": "text"
+                },
+                {
+                  "key": "quality_notes",
+                  "value": "High quality soymeal from Punjab",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Punjab",
+                  "type": "text"
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/listings",
+              "host": ["{{base_url}}"],
+              "path": ["listings"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "item": [
+        {
+          "name": "Get User Contracts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contracts",
+              "host": ["{{base_url}}"],
+              "path": ["contracts"],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Contract by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contracts/1",
+              "host": ["{{base_url}}"],
+              "path": ["contracts", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Offer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listing_id\": 1,\n  \"qty\": 2000,\n  \"offer_price_per_kg\": 46.00,\n  \"expiry_date\": \"2024-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contracts",
+              "host": ["{{base_url}}"],
+              "path": ["contracts"]
+            }
+          }
+        },
+        {
+          "name": "Accept Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accepter_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contracts/1/accept",
+              "host": ["{{base_url}}"],
+              "path": ["contracts", "1", "accept"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Delivery",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contracts/1/confirm-delivery",
+              "host": ["{{base_url}}"],
+              "path": ["contracts", "1", "confirm-delivery"]
+            }
+          }
+        },
+        {
+          "name": "Raise Dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Quality not as described\",\n  \"evidence_urls\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contracts/1/raise-dispute",
+              "host": ["{{base_url}}"],
+              "path": ["contracts", "1", "raise-dispute"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications?page=1&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["notifications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notifications as Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notification_ids\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/mark-read",
+              "host": ["{{base_url}}"],
+              "path": ["notifications", "mark-read"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get Contract Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/audit/1",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "audit", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Price Feed Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Price-Feed-Secret",
+                "value": "secret-token-for-price-updates"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prices\": [\n    {\n      \"commodity\": \"soymeal\",\n      \"price_per_kg\": 45.75,\n      \"recorded_on\": \"2024-01-15\"\n    },\n    {\n      \"commodity\": \"groundnut\",\n      \"price_per_kg\": 85.25,\n      \"recorded_on\": \"2024-01-15\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/price",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "price"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
