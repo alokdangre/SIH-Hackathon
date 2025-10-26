@@ -21,8 +21,7 @@ export default function ListingsPage() {
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      console.log("ohh no4")
-      // router.push("/login");
+      router.push("/login");
       return;
     }
     setUser(getStoredUser());

@@ -11,8 +11,7 @@ export default function Home() {
     if (isAuthenticated()) {
       router.push("/dashboard");
     } else {
-      console.log("oh no")
-      // router.push("/login");
+      router.push("/login");
     }
   }, [router]);
 
