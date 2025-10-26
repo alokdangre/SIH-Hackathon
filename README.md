@@ -143,7 +143,7 @@ frontend/
 
 ### Backend (.env)
 ```
-DATABASE_URL=postgresql://alok:alok123@localhost:5433/hedge_db
+DATABASE_URL=postgresql://demo:demo123@localhost:5433/hedge_db
 JWT_SECRET_KEY=your-secret-key
 CORS_ORIGINS=http://localhost:3000
 ```
