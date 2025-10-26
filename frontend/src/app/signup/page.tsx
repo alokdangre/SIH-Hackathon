@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, User, Mail, Lock, UserCheck } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Lock, UserCheck, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 interface SignupForm {
@@ -26,10 +26,16 @@ export default function SignupPage() {
     handleSubmit,
     formState: { errors },
     watch,
-    reset,
   } = useForm<SignupForm>();
-
+  const selectedRole = watch("role");
   const password = watch("password");
+
+  const roleCardClasses = (role: "farmer" | "buyer") => [
+    "card border-2 transition-all cursor-pointer focus:outline-none",
+    selectedRole === role
+      ? "border-green-500 ring-2 ring-green-400 dark:ring-green-500 bg-green-50 dark:bg-green-900/20 shadow-lg"
+      : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-500",
+  ].join(" ");
 
   const onSubmit = async (data: SignupForm) => {
     if (data.password !== data.confirmPassword) {
@@ -154,34 +160,46 @@ export default function SignupPage() {
                 Account Type *
               </label>
               <div className="grid grid-cols-2 gap-3">
-                <label className="relative block">
+                <label className="relative block" aria-checked={selectedRole === "farmer"}>
                   <input
                     {...register("role", { required: "Please select an account type" })}
                     type="radio"
                     value="farmer"
                     className="peer sr-only"
                   />
-                  <div className="card border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-500 peer-focus-visible:ring-2 peer-focus-visible:ring-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
-                    <div className="text-center">
-                      <div className="text-2xl mb-2">🌾</div>
+                  <div className={roleCardClasses("farmer")}>
+                    <div className="text-center space-y-2">
+                      <div className="text-2xl">🌾</div>
                       <div className="font-semibold text-gray-900 dark:text-white">Farmer</div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Sell your produce</p>
+                      {selectedRole === "farmer" && (
+                        <div className="flex items-center justify-center text-xs font-medium text-green-600 dark:text-green-400 gap-1">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Selected
+                        </div>
+                      )}
                     </div>
                   </div>
                 </label>
 
-                <label className="relative block">
+                <label className="relative block" aria-checked={selectedRole === "buyer"}>
                   <input
                     {...register("role", { required: "Please select an account type" })}
                     type="radio"
                     value="buyer"
                     className="peer sr-only"
                   />
-                  <div className="card border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-500 peer-focus-visible:ring-2 peer-focus-visible:ring-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
-                    <div className="text-center">
-                      <div className="text-2xl mb-2">🏢</div>
+                  <div className={roleCardClasses("buyer")}>
+                    <div className="text-center space-y-2">
+                      <div className="text-2xl">🏢</div>
                       <div className="font-semibold text-gray-900 dark:text-white">Buyer</div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Purchase produce</p>
+                      {selectedRole === "buyer" && (
+                        <div className="flex items-center justify-center text-xs font-medium text-green-600 dark:text-green-400 gap-1">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Selected
+                        </div>
+                      )}
                     </div>
                   </div>
                 </label>
