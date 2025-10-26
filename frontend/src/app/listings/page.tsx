@@ -8,6 +8,7 @@ import { isAuthenticated, getStoredUser } from "@/lib/auth";
 import { listingsApi } from "@/lib/api";
 import { Listing } from "@/lib/types";
 import Navbar from "@/components/Navbar";
+import { resolveMediaUrl } from "@/lib/media";
 
 export default function ListingsPage() {
   const router = useRouter();
@@ -193,7 +194,7 @@ export default function ListingsPage() {
                   <div className="h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative overflow-hidden">
                     {listing.photos?.length ? (
                       <img
-                        src={listing.photos[0]}
+                        src={resolveMediaUrl(listing.photos[0])}
                         alt={listing.commodity}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
