@@ -4,6 +4,8 @@ bcrypt==5.0.0
 cffi==2.0.0
 click==8.3.0
 cryptography==46.0.3
+python-dotenv==1.0.1
+pydantic-settings==2.5.2
 dnspython==2.8.0
 ecdsa==0.19.1
 email-validator==2.3.0
@@ -19,6 +21,7 @@ pycparser==2.23
 pydantic==2.12.2
 pydantic_core==2.41.4
 python-jose==3.5.0
+python-multipart==0.0.9
 rsa==4.9.1
 six==1.17.0
 sniffio==1.3.1
