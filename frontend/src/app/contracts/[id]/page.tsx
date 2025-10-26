@@ -1,20 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, FileText, Calendar, User, Package, AlertTriangle, CheckCircle } from "lucide-react";
 import { contractsApi } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { ContractStatus } from "@/lib/types";
+import Navbar from "@/components/Navbar";
 
-const statusColors = {
-  draft: "bg-gray-100 text-gray-800",
-  offered: "bg-yellow-100 text-yellow-800",
-  accepted: "bg-blue-100 text-blue-800",
-  awaiting_settlement: "bg-purple-100 text-purple-800",
-  completed: "bg-green-100 text-green-800",
-  disputed: "bg-red-100 text-red-800",
+const statusClasses: Record<ContractStatus, string> = {
+  draft: "badge badge-draft",
+  offered: "badge badge-offered",
+  accepted: "badge badge-accepted",
+  awaiting_settlement: "badge badge-awaiting_settlement",
+  completed: "badge badge-completed",
+  disputed: "badge badge-disputed",
 };
 
 export default function ContractDetailPage() {
@@ -99,14 +100,14 @@ export default function ContractDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="bg-white shadow rounded-lg p-6 animate-pulse">
-            <div className="h-8 bg-gray-200 rounded mb-4"></div>
-            <div className="h-64 bg-gray-200 rounded mb-6"></div>
+          <div className="card animate-pulse">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
             <div className="space-y-3">
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
             </div>
           </div>
         </div>
@@ -116,13 +117,13 @@ export default function ContractDetailPage() {
 
   if (!contract) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Contract not found</h2>
-          <p className="text-gray-600 mb-4">The contract you're looking for doesn't exist.</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Contract not found</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">The contract you're looking for doesn't exist.</p>
           <button
             onClick={() => router.push("/contracts")}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            className="btn-primary"
           >
             Back to Contracts
           </button>
@@ -138,26 +139,28 @@ export default function ContractDetailPage() {
   const canDispute = (isBuyer || isSeller) && ["accepted", "awaiting_settlement"].includes(contract.status);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Navbar user={user} />
+
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-6">
             <button
               onClick={() => router.back()}
-              className="mr-4 p-2 text-gray-400 hover:text-gray-600"
+              className="mr-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
             >
               <ArrowLeft className="h-6 w-6" />
             </button>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                 Contract #{contract.id}
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 {contract.listing_ref} • Role: {isBuyer ? "Buyer" : "Seller"}
               </p>
             </div>
-            <span className={`px-3 py-1 text-sm font-medium rounded-full ${statusColors[contract.status]}`}>
+            <span className={`${statusClasses[contract.status]} capitalize`}>
               {contract.status.replace("_", " ")}
             </span>
           </div>
@@ -166,7 +169,7 @@ export default function ContractDetailPage() {
 
       <main className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}
@@ -175,42 +178,42 @@ export default function ContractDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Contract Details */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Contract Details</h2>
+            <div className="card">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Contract Details</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <User className="h-5 w-5 text-gray-400 mr-3" />
+                    <User className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Counterparty</p>
-                      <p className="font-medium">{contract.counterparty_name}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Counterparty</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{contract.counterparty_name}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center">
-                    <Package className="h-5 w-5 text-gray-400 mr-3" />
+                    <Package className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Quantity</p>
-                      <p className="font-medium">{contract.qty_kg.toLocaleString()} kg</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Quantity</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{contract.qty_kg.toLocaleString()} kg</p>
                     </div>
                   </div>
                 </div>
                 
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <FileText className="h-5 w-5 text-gray-400 mr-3" />
+                    <FileText className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Price per kg</p>
-                      <p className="font-medium">₹{contract.offer_price_per_kg}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Price per kg</p>
+                      <p className="font-medium text-gray-900 dark:text-white">₹{contract.offer_price_per_kg}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center">
-                    <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                    <Calendar className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Created</p>
-                      <p className="font-medium">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Created</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
                         {new Date(contract.created_at).toLocaleDateString()}
                       </p>
                     </div>
@@ -218,10 +221,10 @@ export default function ContractDetailPage() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-medium text-gray-900">Total Value:</span>
-                  <span className="text-2xl font-bold text-green-600">
+                  <span className="text-lg font-medium text-gray-900 dark:text-white">Total Value:</span>
+                  <span className="text-2xl font-bold text-green-600 dark:text-green-400">
                     ₹{(contract.qty_kg * contract.offer_price_per_kg).toLocaleString()}
                   </span>
                 </div>
@@ -230,31 +233,31 @@ export default function ContractDetailPage() {
 
             {/* Timeline */}
             {contract.timeline && contract.timeline.length > 0 && (
-              <div className="bg-white shadow rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Contract Timeline</h2>
+              <div className="card">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Contract Timeline</h2>
                 
                 <div className="space-y-4">
                   {contract.timeline.map((event, index) => (
                     <div key={index} className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                      <div className="flex-shrink-0 w-9 h-9 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center">
+                        <div className="w-3 h-3 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
                       </div>
                       <div className="ml-4 flex-1">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-sm font-medium text-gray-900">
+                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                             {event.action.replace("_", " ").toUpperCase()}
                           </h3>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
                             {new Date(event.timestamp).toLocaleString()}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                           Status changed to: {event.status.replace("_", " ")}
                         </p>
                         {event.payload && Object.keys(event.payload).length > 0 && (
-                          <div className="mt-2 text-xs text-gray-500">
+                          <pre className="mt-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/60 rounded-md p-3 overflow-x-auto">
                             {JSON.stringify(event.payload, null, 2)}
-                          </div>
+                          </pre>
                         )}
                       </div>
                     </div>
@@ -267,15 +270,15 @@ export default function ContractDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Actions */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Actions</h3>
               
               <div className="space-y-3">
                 {canAccept && (
                   <button
                     onClick={handleAccept}
                     disabled={acceptMutation.isPending}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md font-medium flex items-center justify-center space-x-2 disabled:opacity-50"
+                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <CheckCircle className="h-4 w-4" />
                     <span>{acceptMutation.isPending ? "Accepting..." : "Accept Offer"}</span>
@@ -286,7 +289,7 @@ export default function ContractDetailPage() {
                   <button
                     onClick={handleConfirmDelivery}
                     disabled={confirmDeliveryMutation.isPending}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium flex items-center justify-center space-x-2 disabled:opacity-50"
+                    className="btn-secondary w-full flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <CheckCircle className="h-4 w-4" />
                     <span>{confirmDeliveryMutation.isPending ? "Confirming..." : "Confirm Delivery"}</span>
@@ -296,7 +299,7 @@ export default function ContractDetailPage() {
                 {canDispute && (
                   <button
                     onClick={() => setShowDisputeModal(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-md font-medium flex items-center justify-center space-x-2"
+                    className="btn-tertiary w-full flex items-center justify-center gap-2 text-red-600 dark:text-red-400 border-red-200 dark:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <AlertTriangle className="h-4 w-4" />
                     <span>Raise Dispute</span>
@@ -305,7 +308,7 @@ export default function ContractDetailPage() {
                 
                 <button
                   onClick={() => router.push("/contracts")}
-                  className="w-full border border-gray-300 text-gray-700 px-4 py-3 rounded-md font-medium hover:bg-gray-50"
+                  className="btn-tertiary w-full"
                 >
                   Back to Contracts
                 </button>
@@ -313,32 +316,32 @@ export default function ContractDetailPage() {
             </div>
 
             {/* Contract Info */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Contract Information</h3>
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contract Information</h3>
               
               <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Contract ID:</span>
-                  <span className="font-medium">#{contract.id}</span>
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Contract ID:</span>
+                  <span className="font-medium text-gray-900 dark:text-white">#{contract.id}</span>
                 </div>
                 
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Listing ID:</span>
-                  <span className="font-medium">#{contract.listing_id}</span>
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Listing ID:</span>
+                  <span className="font-medium text-gray-900 dark:text-white">#{contract.listing_id}</span>
                 </div>
                 
                 {contract.expiry_date && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Expires:</span>
-                    <span className="font-medium">
+                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                    <span>Expires:</span>
+                    <span className="font-medium text-gray-900 dark:text-white">
                       {new Date(contract.expiry_date).toLocaleDateString()}
                     </span>
                   </div>
                 )}
                 
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Last Updated:</span>
-                  <span className="font-medium">
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <span>Last Updated:</span>
+                  <span className="font-medium text-gray-900 dark:text-white">
                     {new Date(contract.updated_at).toLocaleDateString()}
                   </span>
                 </div>
@@ -350,13 +353,13 @@ export default function ContractDetailPage() {
 
       {/* Dispute Modal */}
       {showDisputeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Raise Dispute</h3>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+          <div className="card w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Raise Dispute</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Reason for Dispute *
                 </label>
                 <textarea
@@ -364,7 +367,7 @@ export default function ContractDetailPage() {
                   onChange={(e) => setDisputeReason(e.target.value)}
                   rows={4}
                   placeholder="Please describe the issue with this contract..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
+                  className="input min-h-[120px] resize-none"
                 />
               </div>
               
@@ -375,14 +378,14 @@ export default function ContractDetailPage() {
                     setDisputeReason("");
                     setError("");
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  className="btn-tertiary flex-1"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleRaiseDispute}
                   disabled={disputeMutation.isPending || !disputeReason.trim()}
-                  className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md disabled:opacity-50"
+                  className="btn-primary flex-1 disabled:opacity-50"
                 >
                   {disputeMutation.isPending ? "Submitting..." : "Submit Dispute"}
                 </button>
