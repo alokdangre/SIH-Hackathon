@@ -28,4 +28,9 @@ app.include_router(notification_router.router, prefix="/notifications", tags=["N
 app.include_router(webhook_router.router, prefix="/webhook", tags=["Webhook"])
 app.include_router(admin_router.router, prefix="/admin", tags=["Admin"])
 
+# Health check endpoint for Docker
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "app": settings.app_name}
+
 app.mount("/media", StaticFiles(directory=settings.media_root), name="media")
