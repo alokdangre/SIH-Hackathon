@@ -4,8 +4,9 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.config import get_settings
 from app.core.db import Base, engine
-from app.models import audit_log, contract, dispute, listing, notification, price_history, user
+from app.models import audit_log, contract, dispute, listing, notification, price_history, user, escrow
 from app.routers import admin_router, auth_router, contract_router, listing_router, notification_router, webhook_router
+from app.routers import escrow
 
 settings = get_settings()
 
@@ -27,6 +28,7 @@ app.include_router(contract_router.router, prefix="/contracts", tags=["Contracts
 app.include_router(notification_router.router, prefix="/notifications", tags=["Notifications"])
 app.include_router(webhook_router.router, prefix="/webhook", tags=["Webhook"])
 app.include_router(admin_router.router, prefix="/admin", tags=["Admin"])
+app.include_router(escrow.router, prefix="/escrow", tags=["Escrow"])
 
 # Health check endpoint for Docker
 @app.get("/health")

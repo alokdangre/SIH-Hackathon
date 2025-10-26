@@ -23,3 +23,5 @@ class User(Base):
     seller_contracts = relationship("Contract", foreign_keys="Contract.seller_id", back_populates="seller")
     notifications = relationship("Notification", back_populates="user", cascade="all,delete")
     disputes_raised = relationship("Dispute", back_populates="raised_by", cascade="all,delete")
+    # buyer_escrows = relationship("Escrow", foreign_keys="Escrow.buyer_id", back_populates="buyer")
+    # seller_escrows = relationship("Escrow", foreign_keys="Escrow.seller_id", back_populates="seller")

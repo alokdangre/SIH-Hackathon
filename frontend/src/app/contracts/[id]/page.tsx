@@ -8,6 +8,7 @@ import { contractsApi } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { ContractStatus } from "@/lib/types";
 import Navbar from "@/components/Navbar";
+import EscrowSection from "@/components/EscrowSection";
 
 const statusClasses: Record<ContractStatus, string> = {
   draft: "badge badge-draft",
@@ -230,6 +231,13 @@ export default function ContractDetailPage() {
                 </div>
               </div>
             </div>
+
+            {/* Escrow Section */}
+            <EscrowSection 
+              contractId={contractId} 
+              contract={contract} 
+              user={user} 
+            />
 
             {/* Timeline */}
             {contract.timeline && contract.timeline.length > 0 && (

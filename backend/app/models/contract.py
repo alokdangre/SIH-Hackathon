@@ -39,3 +39,4 @@ class Contract(Base):
     buyer = relationship("User", foreign_keys=[buyer_id], back_populates="buyer_contracts")
     seller = relationship("User", foreign_keys=[seller_id], back_populates="seller_contracts")
     disputes = relationship("Dispute", back_populates="contract", cascade="all,delete-orphan")
+    # escrows = relationship("Escrow", back_populates="contract", cascade="all,delete-orphan")

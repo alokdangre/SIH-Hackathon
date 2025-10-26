@@ -74,3 +74,72 @@ export const notificationsApi = {
   markAsRead: (notificationIds: number[]): Promise<void> =>
     api.post("/notifications/mark-read", { notification_ids: notificationIds }),
 };
+
+// Escrow API
+export const escrowApi = {
+  createEscrow: (data: {
+    contract_id: number;
+    buyer_id: number;
+    seller_id: number;
+    expected_amount_wei: number;
+    create_on_chain: boolean;
+    metadata?: any;
+  }): Promise<any> =>
+    api.post("/escrow/create", data).then((res) => res.data),
+
+  fundEscrow: (data: {
+    escrow_id: number;
+    tx_hash?: string;
+    use_custodial: boolean;
+  }): Promise<any> =>
+    api.post("/escrow/fund", data).then((res) => res.data),
+
+  getEscrowStatus: (escrowId: number): Promise<any> =>
+    api.get(`/escrow/${escrowId}/status`).then((res) => res.data),
+
+  getEscrowByContract: (contractId: number): Promise<any> =>
+    api.get("/escrow/", { params: { contract_id: contractId } }).then((res) => {
+      // Return the first escrow for this contract
+      const escrows = res.data.escrows || [];
+      if (escrows.length === 0) {
+        throw { response: { status: 404 } };
+      }
+      return escrows[0];
+    }),
+
+  confirmDelivery: (data: {
+    escrow_id: number;
+    use_custodial: boolean;
+  }): Promise<any> =>
+    api.post(`/escrow/${data.escrow_id}/confirm-delivery`, data).then((res) => res.data),
+
+  raiseDispute: (data: {
+    escrow_id: number;
+    reason: string;
+    evidence_urls: string[];
+  }): Promise<any> =>
+    api.post(`/escrow/${data.escrow_id}/raise-dispute`, data).then((res) => res.data),
+
+  listEscrows: (params?: {
+    page?: number;
+    limit?: number;
+    state?: string;
+    contract_id?: number;
+  }): Promise<any> =>
+    api.get("/escrow/", { params }).then((res) => res.data),
+
+  resolveDispute: (data: {
+    escrow_id: number;
+    outcome: string;
+    payout_address?: string;
+    payout_amount_wei?: number;
+    resolution_notes: string;
+  }): Promise<any> =>
+    api.post(`/escrow/${data.escrow_id}/resolve`, data).then((res) => res.data),
+
+  listDisputes: (params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<any> =>
+    api.get("/escrow/admin/disputes", { params }).then((res) => res.data),
+};

@@ -9,7 +9,6 @@ import { isAuthenticated, getStoredUser } from "@/lib/auth";
 import { listingsApi, contractsApi } from "@/lib/api";
 import { ContractForm } from "@/lib/types";
 import Navbar from "@/components/Navbar";
-import { resolveMediaUrl } from "@/lib/media";
 
 export default function ListingDetailPage() {
   const router = useRouter();
@@ -149,7 +148,7 @@ export default function ListingDetailPage() {
                   {listing.photos.map((photo, index) => (
                     <div key={index} className="relative group h-64">
                       <img
-                        src={resolveMediaUrl(photo)}
+                        src={photo}
                         alt={`${listing.commodity} ${index + 1}`}
                         className="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
                       />
