@@ -131,6 +131,38 @@ body {
   transform: none;
 }
 
+.btn-tertiary {
+  background-color: transparent;
+  color: #2563eb;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  border: 1px solid #bfdbfe;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-tertiary:hover {
+  background-color: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .btn-tertiary {
+  color: #60a5fa;
+  border-color: #1d4ed8;
+}
+
+.dark .btn-tertiary:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
 .card {
   background-color: white;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

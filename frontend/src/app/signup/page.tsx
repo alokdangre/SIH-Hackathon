@@ -154,34 +154,34 @@ export default function SignupPage() {
                 Account Type *
               </label>
               <div className="grid grid-cols-2 gap-3">
-                <label className="relative">
+                <label className="relative block">
                   <input
                     {...register("role", { required: "Please select an account type" })}
                     type="radio"
                     value="farmer"
-                    className="sr-only"
+                    className="peer sr-only"
                   />
-                  <div className="border-2 border-gray-300 dark:border-gray-600 rounded-lg p-4 cursor-pointer hover:border-green-500 dark:hover:border-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-colors">
+                  <div className="card border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-500 peer-focus-visible:ring-2 peer-focus-visible:ring-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
                     <div className="text-center">
                       <div className="text-2xl mb-2">🌾</div>
-                      <div className="font-medium text-gray-900 dark:text-white">Farmer</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Sell your produce</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Farmer</div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Sell your produce</p>
                     </div>
                   </div>
                 </label>
-                
-                <label className="relative">
+
+                <label className="relative block">
                   <input
                     {...register("role", { required: "Please select an account type" })}
                     type="radio"
                     value="buyer"
-                    className="sr-only"
+                    className="peer sr-only"
                   />
-                  <div className="border-2 border-gray-300 dark:border-gray-600 rounded-lg p-4 cursor-pointer hover:border-green-500 dark:hover:border-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-colors">
+                  <div className="card border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-500 peer-focus-visible:ring-2 peer-focus-visible:ring-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
                     <div className="text-center">
                       <div className="text-2xl mb-2">🏢</div>
-                      <div className="font-medium text-gray-900 dark:text-white">Buyer</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Purchase produce</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Buyer</div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Purchase produce</p>
                     </div>
                   </div>
                 </label>

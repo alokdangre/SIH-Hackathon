@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, Calendar, User, Package, Droplets, FileText } from "
 import { isAuthenticated, getStoredUser } from "@/lib/auth";
 import { listingsApi, contractsApi } from "@/lib/api";
 import { ContractForm } from "@/lib/types";
+import Navbar from "@/components/Navbar";
 
 export default function ListingDetailPage() {
   const router = useRouter();
@@ -110,25 +111,27 @@ export default function ListingDetailPage() {
   const isOwner = listing.seller_id === user.id;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Navbar user={user} />
+
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-6">
             <button
               onClick={() => router.back()}
-              className="mr-4 p-2 text-gray-400 hover:text-gray-600"
+              className="mr-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
             >
               <ArrowLeft className="h-6 w-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 capitalize">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white capitalize">
                 {listing.commodity}
                 {listing.variety && (
-                  <span className="text-xl text-gray-500 ml-2">({listing.variety})</span>
+                  <span className="text-xl text-gray-500 dark:text-gray-400 ml-2">({listing.variety})</span>
                 )}
               </h1>
-              <p className="text-gray-600">Listed by {listing.seller_alias}</p>
+              <p className="text-gray-600 dark:text-gray-400">Listed by {listing.seller_alias}</p>
             </div>
           </div>
         </div>
@@ -139,41 +142,47 @@ export default function ListingDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Photos */}
-            {listing.photos && listing.photos.length > 0 && (
-              <div className="bg-white shadow rounded-lg overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+            <div className="card overflow-hidden">
+              {listing.photos && listing.photos.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {listing.photos.map((photo, index) => (
-                    <img
-                      key={index}
-                      src={photo}
-                      alt={`${listing.commodity} ${index + 1}`}
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
+                    <div key={index} className="relative group h-64">
+                      <img
+                        src={photo}
+                        alt={`${listing.commodity} ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
+                  <FileText className="h-12 w-12 mb-3" />
+                  <p className="text-sm">No photos uploaded for this listing.</p>
+                </div>
+              )}
+            </div>
 
             {/* Details */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Details</h2>
+            <div className="card">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Details</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <Package className="h-5 w-5 text-gray-400 mr-3" />
+                    <Package className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Quantity Available</p>
-                      <p className="font-medium">{listing.qty_kg.toLocaleString()} kg</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Quantity Available</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{listing.qty_kg.toLocaleString()} kg</p>
                     </div>
                   </div>
                   
-                  {listing.moisture_pct && (
+                  {listing.moisture_pct !== null && listing.moisture_pct !== undefined && (
                     <div className="flex items-center">
-                      <Droplets className="h-5 w-5 text-gray-400 mr-3" />
+                      <Droplets className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                       <div>
-                        <p className="text-sm text-gray-500">Moisture Content</p>
-                        <p className="font-medium">{listing.moisture_pct}%</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Moisture Content</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{listing.moisture_pct}%</p>
                       </div>
                     </div>
                   )}
@@ -182,19 +191,19 @@ export default function ListingDetailPage() {
                 <div className="space-y-4">
                   {listing.location && (
                     <div className="flex items-center">
-                      <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                      <MapPin className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                       <div>
-                        <p className="text-sm text-gray-500">Location</p>
-                        <p className="font-medium">{listing.location}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{listing.location}</p>
                       </div>
                     </div>
                   )}
                   
                   <div className="flex items-center">
-                    <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                    <Calendar className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Listed On</p>
-                      <p className="font-medium">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Listed On</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
                         {new Date(listing.created_at).toLocaleDateString()}
                       </p>
                     </div>
@@ -205,34 +214,34 @@ export default function ListingDetailPage() {
 
             {/* Quality Notes */}
             {listing.quality_notes && (
-              <div className="bg-white shadow rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Quality Notes</h2>
-                <p className="text-gray-700 leading-relaxed">{listing.quality_notes}</p>
+              <div className="card">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quality Notes</h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{listing.quality_notes}</p>
               </div>
             )}
 
             {/* Offers Summary */}
             {listing.offers_summary && (
-              <div className="bg-white shadow rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Offers Summary</h2>
+              <div className="card">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Offers Summary</h2>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {listing.offers_summary.total_offers}
                     </p>
-                    <p className="text-sm text-gray-500">Total Offers</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Offers</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold text-blue-600">
                       {listing.offers_summary.active_offers}
                     </p>
-                    <p className="text-sm text-gray-500">Active Offers</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Active Offers</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500">Last Offer Status</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Last Offer Status</p>
                     {listing.offers_summary.last_offer_status && (
-                      <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
-                        {listing.offers_summary.last_offer_status}
+                      <span className="badge badge-muted capitalize">
+                        {listing.offers_summary.last_offer_status.replace("_", " ")}
                       </span>
                     )}
                   </div>
@@ -244,19 +253,19 @@ export default function ListingDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Price Card */}
-            <div className="bg-white shadow rounded-lg p-6">
+            <div className="card">
               <div className="text-center">
                 <p className="text-3xl font-bold text-green-600">
                   ₹{listing.price_per_kg}/kg
                 </p>
-                <p className="text-sm text-gray-500 mt-1">Listed Price</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Listed Price</p>
               </div>
               
               <div className="mt-6 space-y-3">
                 {canMakeOffer && (
                   <button
                     onClick={() => setShowOfferModal(true)}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium"
+                    className="btn-primary w-full"
                   >
                     Make Offer
                   </button>
@@ -265,7 +274,7 @@ export default function ListingDetailPage() {
                 {isOwner && (
                   <button
                     onClick={() => router.push("/contracts")}
-                    className="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-md font-medium"
+                    className="btn-secondary w-full"
                   >
                     View Offers
                   </button>
@@ -273,7 +282,7 @@ export default function ListingDetailPage() {
                 
                 <button
                   onClick={() => router.push("/listings")}
-                  className="w-full border border-gray-300 text-gray-700 px-4 py-3 rounded-md font-medium hover:bg-gray-50"
+                  className="btn-tertiary w-full"
                 >
                   Browse More Listings
                 </button>
@@ -281,13 +290,13 @@ export default function ListingDetailPage() {
             </div>
 
             {/* Seller Info */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Seller Information</h3>
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Seller Information</h3>
               <div className="flex items-center mb-3">
-                <User className="h-5 w-5 text-gray-400 mr-3" />
-                <span className="font-medium">{listing.seller_alias}</span>
+                <User className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3" />
+                <span className="font-medium text-gray-900 dark:text-white">{listing.seller_alias}</span>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Verified farmer with quality commodities
               </p>
             </div>
@@ -298,18 +307,18 @@ export default function ListingDetailPage() {
       {/* Make Offer Modal */}
       {showOfferModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Make an Offer</h3>
+          <div className="card w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Make an Offer</h3>
             
             <form onSubmit={handleSubmit(onSubmitOffer)} className="space-y-4">
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
                   {error}
                 </div>
               )}
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Quantity (kg) *
                 </label>
                 <input
@@ -321,7 +330,7 @@ export default function ListingDetailPage() {
                   type="number"
                   step="0.01"
                   placeholder={`Max: ${listing.qty_kg} kg`}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
                 {errors.qty && (
                   <p className="mt-1 text-sm text-red-600">{errors.qty.message}</p>
@@ -329,7 +338,7 @@ export default function ListingDetailPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Offer Price (₹/kg) *
                 </label>
                 <input
@@ -340,7 +349,7 @@ export default function ListingDetailPage() {
                   type="number"
                   step="0.01"
                   placeholder={`Listed at ₹${listing.price_per_kg}/kg`}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
                 {errors.offer_price_per_kg && (
                   <p className="mt-1 text-sm text-red-600">{errors.offer_price_per_kg.message}</p>
@@ -348,14 +357,14 @@ export default function ListingDetailPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Offer Expires On
                 </label>
                 <input
                   {...register("expiry_date")}
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="input"
                 />
               </div>
               
@@ -367,14 +376,14 @@ export default function ListingDetailPage() {
                     setError("");
                     reset();
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  className="btn-secondary flex-1"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={createOfferMutation.isPending}
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
+                  className="btn-primary flex-1 disabled:opacity-50"
                 >
                   {createOfferMutation.isPending ? "Creating..." : "Submit Offer"}
                 </button>
